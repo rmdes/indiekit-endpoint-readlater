@@ -1,0 +1,52 @@
+{
+  "name": "@rmdes/indiekit-endpoint-readlater",
+  "version": "1.0.0",
+  "description": "Read It Later endpoint for Indiekit. Save URLs from any context for later consumption.",
+  "keywords": [
+    "indiekit",
+    "indiekit-plugin",
+    "indieweb",
+    "read-later",
+    "bookmarks",
+    "reading-list"
+  ],
+  "homepage": "https://github.com/rmdes/indiekit-endpoint-readlater",
+  "bugs": {
+    "url": "https://github.com/rmdes/indiekit-endpoint-readlater/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rmdes/indiekit-endpoint-readlater.git"
+  },
+  "author": {
+    "name": "Ricardo Mendes",
+    "url": "https://rmendes.net"
+  },
+  "license": "MIT",
+  "engines": {
+    "node": ">=20"
+  },
+  "type": "module",
+  "main": "index.js",
+  "exports": {
+    ".": "./index.js"
+  },
+  "files": [
+    "lib",
+    "locales",
+    "views",
+    "assets",
+    "index.js"
+  ],
+  "dependencies": {
+    "@indiekit/error": "^1.0.0-beta.25",
+    "@indiekit/frontend": "^1.0.0-beta.25",
+    "express": "^5.0.0"
+  },
+  "peerDependencies": {
+    "@indiekit/indiekit": ">=1.0.0-beta.25"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
