@@ -1,0 +1,20 @@
+{
+  "readlater": {
+    "title": "Read It Later",
+    "empty": "No saved items yet.",
+    "emptyFiltered": "No items match your filters.",
+    "save": "Save for later",
+    "saved": "Saved",
+    "remove": "Remove",
+    "filters": {
+      "sort": "Sort",
+      "source": "Source",
+      "search": "Search",
+      "allSources": "All sources",
+      "newestFirst": "Newest first",
+      "oldestFirst": "Oldest first",
+      "apply": "Filter",
+      "clear": "Clear"
+    }
+  }
+}
