@@ -1,0 +1,116 @@
+{% extends "document.njk" %}
+
+{% block content %}
+<link rel="stylesheet" href="/assets/@rmdes-indiekit-endpoint-readlater/styles.css">
+
+<div class="readlater">
+  <header class="readlater__header">
+    <h1>{{ title }}</h1>
+  </header>
+
+  {# Filters toolbar #}
+  <form action="{{ baseUrl }}" method="GET" class="readlater__filters">
+    <div class="readlater__filter-group">
+      <label for="sort" class="readlater__filter-label">Sort</label>
+      <select name="sort" id="sort" class="readlater__select">
+        <option value="desc" {% if sort == "desc" %}selected{% endif %}>Newest first</option>
+        <option value="asc" {% if sort == "asc" %}selected{% endif %}>Oldest first</option>
+      </select>
+    </div>
+
+    <div class="readlater__filter-group">
+      <label for="source" class="readlater__filter-label">Source</label>
+      <select name="source" id="source" class="readlater__select">
+        <option value="">All sources</option>
+        {% for s in sources %}
+        <option value="{{ s }}" {% if source == s %}selected{% endif %}>{{ s }}</option>
+        {% endfor %}
+      </select>
+    </div>
+
+    <div class="readlater__filter-group readlater__filter-group--search">
+      <label for="q" class="readlater__filter-label">Search</label>
+      <input type="search" name="q" id="q" value="{{ q }}" placeholder="Search title or URL..." class="readlater__input">
+    </div>
+
+    <button type="submit" class="button button--primary button--small">Filter</button>
+    {% if source or q %}
+    <a href="{{ baseUrl }}" class="button button--secondary button--small">Clear</a>
+    {% endif %}
+  </form>
+
+  {# Items list #}
+  {% if items.length > 0 %}
+  <div class="readlater__list" id="readlater-list">
+    {% for item in items %}
+    <div class="readlater__item" data-item-id="{{ item._id }}">
+      <div class="readlater__item-content">
+        <a href="{{ item.url }}" class="readlater__item-title" target="_blank" rel="noopener">
+          {{ item.title }}
+        </a>
+        <div class="readlater__item-meta">
+          <span class="readlater__source-badge readlater__source-badge--{{ item.source }}">
+            {{ item.source }}
+          </span>
+          {% if item.savedAt %}
+          <time datetime="{{ item.savedAt }}" class="readlater__item-date">
+            {{ item.savedAt | date("PPp", { locale: locale, timeZone: application.timeZone }) }}
+          </time>
+          {% endif %}
+        </div>
+      </div>
+      <button type="button"
+              class="readlater__delete"
+              data-item-id="{{ item._id }}"
+              title="Remove">
+        {{ icon("delete") }}
+      </button>
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div class="readlater__empty">
+    <p>{% if q or source %}No items match your filters.{% else %}No saved items yet. Save items from the microsub reader, activitypub reader, or frontend pages.{% endif %}</p>
+  </div>
+  {% endif %}
+</div>
+
+<script type="module">
+  const list = document.getElementById('readlater-list');
+  if (list) {
+    list.addEventListener('click', async (e) => {
+      const button = e.target.closest('.readlater__delete');
+      if (!button) return;
+
+      e.preventDefault();
+      button.disabled = true;
+
+      const itemId = button.dataset.itemId;
+      if (!itemId) return;
+
+      try {
+        const response = await fetch('{{ baseUrl }}/delete', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ id: itemId }),
+          credentials: 'same-origin'
+        });
+
+        if (response.ok) {
+          const row = button.closest('.readlater__item');
+          if (row) {
+            row.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+            row.style.opacity = '0';
+            row.style.transform = 'translateX(-20px)';
+            setTimeout(() => row.remove(), 300);
+          }
+        } else {
+          button.disabled = false;
+        }
+      } catch {
+        button.disabled = false;
+      }
+    });
+  }
+</script>
+{% endblock %}
