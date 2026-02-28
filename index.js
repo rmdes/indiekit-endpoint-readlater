@@ -4,6 +4,7 @@ import { fileURLToPath } from "node:url";
 import express from "express";
 
 import { readlaterController } from "./lib/controllers/readlater.js";
+import { readlaterApiController } from "./lib/controllers/api.js";
 import { createIndexes } from "./lib/storage/items.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -13,6 +14,7 @@ const defaults = {
 };
 
 const router = express.Router();
+const publicRouter = express.Router();
 
 export default class ReadLaterEndpoint {
   name = "Read It Later endpoint";
@@ -48,6 +50,16 @@ export default class ReadLaterEndpoint {
     router.post("/save", readlaterController.save);
     router.post("/delete", readlaterController.remove);
     return router;
+  }
+
+  /**
+   * Public routes (no authentication required)
+   * Read-only JSON API for the frontend page
+   */
+  get routesPublic() {
+    publicRouter.get("/api/items", readlaterApiController.listItems);
+    publicRouter.get("/api/sources", readlaterApiController.listSources);
+    return publicRouter;
   }
 
   init(Indiekit) {
