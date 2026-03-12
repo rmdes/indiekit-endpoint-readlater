@@ -8,6 +8,19 @@
     <h1>{{ title }}</h1>
   </header>
 
+  {# Save form #}
+  <form class="readlater__save-form" id="readlater-save-form">
+    <div class="readlater__filter-group readlater__filter-group--search">
+      <label for="save-url" class="readlater__filter-label">Save a link</label>
+      <input type="url" name="url" id="save-url" placeholder="https://example.com/article" required class="readlater__input">
+    </div>
+    <div class="readlater__filter-group readlater__filter-group--title">
+      <label for="save-title" class="readlater__filter-label">Title (optional)</label>
+      <input type="text" name="title" id="save-title" placeholder="Page title" class="readlater__input">
+    </div>
+    <button type="submit" class="button button--primary button--small" id="save-btn">Save</button>
+  </form>
+
   {# Filters toolbar #}
   <form action="{{ baseUrl }}" method="GET" class="readlater__filters">
     <div class="readlater__filter-group">
@@ -77,40 +90,148 @@
 
 <script type="module">
   const list = document.getElementById('readlater-list');
-  if (list) {
-    list.addEventListener('click', async (e) => {
-      const button = e.target.closest('.readlater__delete');
-      if (!button) return;
+  const saveForm = document.getElementById('readlater-save-form');
+  const saveBtn = document.getElementById('save-btn');
 
+  // Save form handler
+  if (saveForm) {
+    saveForm.addEventListener('submit', async (e) => {
       e.preventDefault();
-      button.disabled = true;
+      const urlInput = document.getElementById('save-url');
+      const titleInput = document.getElementById('save-title');
+      const url = urlInput.value.trim();
+      if (!url) return;
 
-      const itemId = button.dataset.itemId;
-      if (!itemId) return;
+      saveBtn.disabled = true;
+      saveBtn.textContent = 'Saving\u2026';
 
       try {
-        const response = await fetch('{{ baseUrl }}/delete', {
+        const response = await fetch('{{ baseUrl }}/save', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ id: itemId }),
+          body: JSON.stringify({
+            url,
+            title: titleInput.value.trim() || url,
+            source: 'manual'
+          }),
           credentials: 'same-origin'
         });
 
-        if (response.ok) {
-          const row = button.closest('.readlater__item');
-          if (row) {
-            row.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
-            row.style.opacity = '0';
-            row.style.transform = 'translateX(-20px)';
-            setTimeout(() => row.remove(), 300);
+        const data = await response.json();
+        if (response.ok && data.success) {
+          urlInput.value = '';
+          titleInput.value = '';
+
+          if (data.alreadySaved) {
+            saveBtn.textContent = 'Already saved';
+            setTimeout(() => { saveBtn.textContent = 'Save'; saveBtn.disabled = false; }, 2000);
+            return;
           }
-        } else {
-          button.disabled = false;
+
+          // Insert the new item at the top of the list
+          let listEl = document.getElementById('readlater-list');
+          if (!listEl) {
+            const emptyEl = document.querySelector('.readlater__empty');
+            if (emptyEl) emptyEl.remove();
+            listEl = document.createElement('div');
+            listEl.className = 'readlater__list';
+            listEl.id = 'readlater-list';
+            document.querySelector('.readlater__filters').insertAdjacentElement('afterend', listEl);
+          }
+
+          const item = data.item;
+          const row = document.createElement('div');
+          row.className = 'readlater__item';
+          row.dataset.itemId = item._id;
+
+          const content = document.createElement('div');
+          content.className = 'readlater__item-content';
+
+          const link = document.createElement('a');
+          link.className = 'readlater__item-title';
+          link.href = item.url;
+          link.target = '_blank';
+          link.rel = 'noopener';
+          link.textContent = item.title;
+
+          const meta = document.createElement('div');
+          meta.className = 'readlater__item-meta';
+
+          const badge = document.createElement('span');
+          badge.className = 'readlater__source-badge readlater__source-badge--manual';
+          badge.textContent = 'manual';
+
+          const time = document.createElement('time');
+          time.className = 'readlater__item-date';
+          time.dateTime = item.savedAt;
+          time.textContent = new Date(item.savedAt).toLocaleString();
+
+          meta.appendChild(badge);
+          meta.appendChild(time);
+          content.appendChild(link);
+          content.appendChild(meta);
+
+          const delBtn = document.createElement('button');
+          delBtn.type = 'button';
+          delBtn.className = 'readlater__delete';
+          delBtn.dataset.itemId = item._id;
+          delBtn.title = 'Remove';
+          delBtn.textContent = '\u00d7';
+
+          row.appendChild(content);
+          row.appendChild(delBtn);
+
+          row.style.opacity = '0';
+          row.style.transform = 'translateY(-10px)';
+          listEl.prepend(row);
+          requestAnimationFrame(() => {
+            row.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+            row.style.opacity = '1';
+            row.style.transform = 'translateY(0)';
+          });
         }
       } catch {
-        button.disabled = false;
+        // Silently fail
       }
+
+      saveBtn.textContent = 'Save';
+      saveBtn.disabled = false;
     });
   }
+
+  // Delete handler (delegated to list or dynamically added items)
+  document.addEventListener('click', async (e) => {
+    const button = e.target.closest('.readlater__delete');
+    if (!button) return;
+
+    e.preventDefault();
+    button.disabled = true;
+
+    const itemId = button.dataset.itemId;
+    if (!itemId) return;
+
+    try {
+      const response = await fetch('{{ baseUrl }}/delete', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: itemId }),
+        credentials: 'same-origin'
+      });
+
+      if (response.ok) {
+        const row = button.closest('.readlater__item');
+        if (row) {
+          row.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+          row.style.opacity = '0';
+          row.style.transform = 'translateX(-20px)';
+          setTimeout(() => row.remove(), 300);
+        }
+      } else {
+        button.disabled = false;
+      }
+    } catch {
+      button.disabled = false;
+    }
+  });
 </script>
 {% endblock %}

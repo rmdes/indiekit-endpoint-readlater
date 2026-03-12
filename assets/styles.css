@@ -12,6 +12,22 @@
   margin-bottom: var(--space-l);
 }
 
+.readlater__save-form {
+  align-items: flex-end;
+  border: 1px solid var(--color-border, #ddd);
+  border-radius: 4px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-s);
+  margin-bottom: var(--space-m);
+  padding: var(--space-s) var(--space-m);
+}
+
+.readlater__filter-group--title {
+  flex: 0 1 200px;
+  min-width: 120px;
+}
+
 .readlater__filter-group {
   display: flex;
   flex-direction: column;
@@ -101,6 +117,7 @@
 .readlater__source-badge--podroll { background: #f59e0b; }
 .readlater__source-badge--listening { background: #ec4899; }
 .readlater__source-badge--news { background: #ef4444; }
+.readlater__source-badge--manual { background: #6b7280; }
 
 .readlater__item-date {
   color: var(--color-text-secondary, #666);
