@@ -47,6 +47,7 @@ export default class ReadLaterEndpoint {
 
   get routes() {
     router.get("/", readlaterController.list);
+    router.get("/bookmarklet", readlaterController.bookmarklet);
     router.post("/save", readlaterController.save);
     router.post("/delete", readlaterController.remove);
     return router;

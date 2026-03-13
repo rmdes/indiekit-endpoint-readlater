@@ -1,0 +1,33 @@
+{% extends "document.njk" %}
+
+{% block content %}
+<link rel="stylesheet" href="/assets/@rmdes-indiekit-endpoint-readlater/styles.css">
+
+<div class="readlater-bookmarklet">
+  {% if error %}
+    <div class="readlater-bookmarklet__status readlater-bookmarklet__status--error">
+      <p>{{ error }}</p>
+    </div>
+  {% elif savedItem %}
+    <div class="readlater-bookmarklet__status readlater-bookmarklet__status--success">
+      {% if alreadySaved %}
+        <p>Already saved</p>
+      {% else %}
+        <p>Saved!</p>
+      {% endif %}
+      <a href="{{ savedItem.url }}" class="readlater-bookmarklet__link" target="_blank" rel="noopener">
+        {{ savedItem.title }}
+      </a>
+    </div>
+  {% endif %}
+</div>
+
+<script type="module">
+  // Auto-close popup after 1.5 seconds
+  setTimeout(() => {
+    if (window.opener) {
+      window.close();
+    }
+  }, 1500);
+</script>
+{% endblock %}

@@ -21,6 +21,16 @@
     <button type="submit" class="button button--primary button--small" id="save-btn">Save</button>
   </form>
 
+  {# Bookmarklet #}
+  {% set bookmarkletJs %}javascript:(function(){var t=document.title;window.open('{{ application.url }}{{ baseUrl }}/bookmarklet?url='+encodeURIComponent(location.href)+'&title='+encodeURIComponent(t),'ReadLater','width=400,height=200,toolbar=0,menubar=0,location=0,status=0');})();{% endset %}
+  <div class="readlater__bookmarklet">
+    <span class="readlater__filter-label">Bookmarklet</span>
+    <span class="readlater__bookmarklet-row">
+      <a href="{{ bookmarkletJs }}" class="readlater__bookmarklet-link" onclick="return false;">Read Later</a>
+      <span class="readlater__bookmarklet-hint">Drag this to your bookmarks bar</span>
+    </span>
+  </div>
+
   {# Filters toolbar #}
   <form action="{{ baseUrl }}" method="GET" class="readlater__filters">
     <div class="readlater__filter-group">
