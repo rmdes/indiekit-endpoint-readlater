@@ -1,6 +1,6 @@
 {
   "name": "@rmdes/indiekit-endpoint-readlater",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Read It Later endpoint for Indiekit. Save URLs from any context for later consumption.",
   "keywords": [
     "indiekit",

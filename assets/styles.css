@@ -160,23 +160,6 @@
   gap: var(--space-s);
 }
 
-.readlater__bookmarklet-link {
-  background: #8b5cf6;
-  border-radius: 4px;
-  color: #fff;
-  cursor: grab;
-  display: inline-block;
-  font-size: 0.8125rem;
-  font-weight: 600;
-  padding: 0.375rem 0.75rem;
-  text-decoration: none;
-}
-
-.readlater__bookmarklet-link:hover {
-  background: #7c3aed;
-  color: #fff;
-}
-
 .readlater__bookmarklet-hint {
   color: var(--color-text-secondary, #666);
   font-size: 0.75rem;

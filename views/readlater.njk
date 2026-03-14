@@ -22,11 +22,22 @@
   </form>
 
   {# Bookmarklet #}
-  {% set bookmarkletJs %}javascript:(function(){var t=document.title;window.open('{{ application.url }}{{ baseUrl }}/bookmarklet?url='+encodeURIComponent(location.href)+'&title='+encodeURIComponent(t),'ReadLater','width=400,height=200,toolbar=0,menubar=0,location=0,status=0');})();{% endset %}
+  {%- from "bookmarklet/macro.njk" import bookmarklet -%}
+  {%- set bookmarkletFunction -%}
+    (function(){
+      var t=document.title;
+      window.open(
+        '{{ application.url }}{{ baseUrl }}/bookmarklet?url='+encodeURIComponent(location.href)+'&title='+encodeURIComponent(t),
+        'ReadLater',
+        'resizable,scrollbars,status=0,toolbar=0,menubar=0,titlebar=0,width=400,height=200,location=0'
+      );
+    })();
+  {%- endset -%}
+  {%- set bookmarkletHref = "javascript:" + bookmarkletFunction | replace("  ", "") | replace("\n", "") | replace("&", "&amp;") | trim -%}
   <div class="readlater__bookmarklet">
     <span class="readlater__filter-label">Bookmarklet</span>
     <span class="readlater__bookmarklet-row">
-      <a href="{{ bookmarkletJs }}" class="readlater__bookmarklet-link" onclick="return false;">Read Later</a>
+      {{ bookmarklet({ href: bookmarkletHref, text: "Read Later" }) }}
       <span class="readlater__bookmarklet-hint">Drag this to your bookmarks bar</span>
     </span>
   </div>
