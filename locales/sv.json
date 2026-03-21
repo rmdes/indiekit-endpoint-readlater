@@ -1,0 +1,20 @@
+{
+  "readlater": {
+    "title": "Läs senare",
+    "empty": "Inga sparade objekt ännu.",
+    "emptyFiltered": "Inga objekt matchar dina filter.",
+    "save": "Spara för senare",
+    "saved": "Sparad",
+    "remove": "Ta bort",
+    "filters": {
+      "sort": "Sortera",
+      "source": "Källa",
+      "search": "Sök",
+      "allSources": "Alla källor",
+      "newestFirst": "Nyast först",
+      "oldestFirst": "Äldst först",
+      "apply": "Filtrera",
+      "clear": "Rensa"
+    }
+  }
+}

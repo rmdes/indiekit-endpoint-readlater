@@ -1,0 +1,20 @@
+{
+  "readlater": {
+    "title": "Baca Nanti",
+    "empty": "Belum ada item tersimpan.",
+    "emptyFiltered": "Tidak ada item yang sesuai dengan filter Anda.",
+    "save": "Simpan untuk nanti",
+    "saved": "Tersimpan",
+    "remove": "Hapus",
+    "filters": {
+      "sort": "Urutkan",
+      "source": "Sumber",
+      "search": "Cari",
+      "allSources": "Semua sumber",
+      "newestFirst": "Terbaru dahulu",
+      "oldestFirst": "Terlama dahulu",
+      "apply": "Filter",
+      "clear": "Hapus filter"
+    }
+  }
+}

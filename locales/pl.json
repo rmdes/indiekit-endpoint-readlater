@@ -1,0 +1,20 @@
+{
+  "readlater": {
+    "title": "Przeczytaj później",
+    "empty": "Brak zapisanych elementów.",
+    "emptyFiltered": "Żadne elementy nie pasują do filtrów.",
+    "save": "Zapisz na później",
+    "saved": "Zapisano",
+    "remove": "Usuń",
+    "filters": {
+      "sort": "Sortuj",
+      "source": "Źródło",
+      "search": "Szukaj",
+      "allSources": "Wszystkie źródła",
+      "newestFirst": "Najnowsze najpierw",
+      "oldestFirst": "Najstarsze najpierw",
+      "apply": "Filtruj",
+      "clear": "Wyczyść"
+    }
+  }
+}

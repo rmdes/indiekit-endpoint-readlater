@@ -1,0 +1,20 @@
+{
+  "readlater": {
+    "title": "稍后阅读",
+    "empty": "暂无保存的内容。",
+    "emptyFiltered": "没有匹配筛选条件的内容。",
+    "save": "稍后阅读",
+    "saved": "已保存",
+    "remove": "移除",
+    "filters": {
+      "sort": "排序",
+      "source": "来源",
+      "search": "搜索",
+      "allSources": "所有来源",
+      "newestFirst": "最新优先",
+      "oldestFirst": "最早优先",
+      "apply": "筛选",
+      "clear": "清除"
+    }
+  }
+}

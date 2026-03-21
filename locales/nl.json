@@ -1,0 +1,20 @@
+{
+  "readlater": {
+    "title": "Later lezen",
+    "empty": "Nog geen opgeslagen items.",
+    "emptyFiltered": "Geen items komen overeen met je filters.",
+    "save": "Bewaar voor later",
+    "saved": "Opgeslagen",
+    "remove": "Verwijderen",
+    "filters": {
+      "sort": "Sorteren",
+      "source": "Bron",
+      "search": "Zoeken",
+      "allSources": "Alle bronnen",
+      "newestFirst": "Nieuwste eerst",
+      "oldestFirst": "Oudste eerst",
+      "apply": "Filteren",
+      "clear": "Wissen"
+    }
+  }
+}
